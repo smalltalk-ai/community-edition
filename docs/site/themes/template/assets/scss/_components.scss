@@ -534,6 +534,9 @@
     }
     .buttons {
         margin-bottom: 56px;
+        .button {
+            font-family: $metropolis-medium;
+        }
     }
     img {
         margin-bottom: 50px;
