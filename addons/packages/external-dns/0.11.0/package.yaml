@@ -1,10 +1,10 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: external-dns.community.tanzu.vmware.com.0.11.0+1
+  name: external-dns.community.tanzu.vmware.com.0.11.0+2
 spec:
   refName: external-dns.community.tanzu.vmware.com
-  version: 0.11.0+1
+  version: 0.11.0+2
   releasedAt: 2022-05-25T21:00:00Z
   releaseNotes: "external-dns 0.11.0 https://github.com/kubernetes-sigs/external-dns/releases/tag/v0.11.0"
   valuesSchema:
@@ -115,6 +115,68 @@ spec:
               nullable: true
               description: 'Annotations that can be set on the external-dns service account. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/'
               default: null
+        aws:
+          type: object
+          additionalProperties: false
+          nullable: true
+          description: AWS provider related configuration
+          properties:
+            credentials:
+              type: object
+              additionalProperties: false
+              nullable: true
+              properties:
+                accessKey:
+                  type: string
+                  description: AWS access key. When provided along with the aws.secretKey, a Secret will be created and referenced in the external-dns Deployment.
+                  default: ""
+                secretKey:
+                  type: string
+                  description: AWS secret key. When provided along with the aws.accessKey, a Secret will be created and referenced in the external-dns Deployment.
+                  default: ""
+        azure:
+          type: object
+          additionalProperties: false
+          nullable: true
+          description: Azure configuration. Package will create azure.json Secret, Volume, and VolumeMount with supplied values.
+          properties:
+            aadClientId:
+              type: string
+              nullable: true
+              description: AAD Client ID
+              default: null
+            aadClientSecret:
+              type: string
+              nullable: true
+              description: AAD Client Secret
+              default: null
+            cloud:
+              type: string
+              nullable: true
+              description: Cloud
+              default: null
+            resourceGroup:
+              type: string
+              description: Resource Group
+              default: ""
+            subscriptionId:
+              type: string
+              description: Subscription ID
+              default: ""
+            tenantId:
+              type: string
+              description: Tenant ID
+              default: ""
+            useManagedIdentityExtension:
+              type: boolean
+              nullable: true
+              description: Use manaaged identity extension
+              default: null
+            userAssignedIdentityID:
+              type: string
+              nullable: true
+              description: User Assigned Identity ID
+              default: null
   capacityRequirementsDescription: "No specific capacity requirements."
   licenses:
     - "Apache 2.0"
@@ -122,7 +184,7 @@ spec:
     spec:
       fetch:
         - imgpkgBundle:
-            image: projects.registry.vmware.com/tce/external-dns@sha256:880ba9aa1d28950b0ec3d25c37d93e43c286ae75014e31d923621be52e2be167
+            image: projects.registry.vmware.com/tce/external-dns@sha256:2081ab337c257414cc13d837da0b6d5701cce6dad741c58ca2acc808af91ad19
       template:
         - ytt:
             paths:
